@@ -1,0 +1,112 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.container {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.weather {
+    background-color: aquamarine;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width : 300px;
+    gap: 15px;
+}
+
+.weather .navbar {
+    display: flex;
+    align-self: flex-start;
+    gap: 15px;
+    align-items: stretch;
+    border-bottom: 3px solid #000;
+    width: 100%;
+    padding-bottom: 5px;
+}
+
+.weather .navbar button {
+    background-color: transparent;
+    border: none;
+    font-weight:600;
+    cursor: pointer;
+}
+
+.weather .navbar h3 {
+    font-size: medium;
+}
+
+.weather .enter_city {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    gap: 5px;
+}
+
+.weather .enter_city input {
+    border: 2px solid rgb(0, 0, 0);
+    outline: none;
+    border-radius: 5px;
+    text-align: center;
+    height: 40px;
+    background-color: aquamarine;
+    flex-grow: 5;
+}
+
+.weather .enter_city button {
+    flex-grow: 1;
+    background-color: transparent;
+    font-weight:600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    transition: all 0.2s;
+}
+
+.weather .enter_city button:hover {
+    color: white
+}
+
+.weather hr {
+    border: none;
+    border-top: 3px double #000000;
+    overflow: visible;
+    text-align: center;
+    height: 5px;
+    width: 100%;
+}
+
+.weather hr::after {
+    background-color: aquamarine;
+    content: 'OR';
+    padding: 0 4px;
+    position: relative;
+    top: -13px;
+}
+
+.weather button#get-location {
+    width: 100%;
+    text-align: center;
+    height: 40px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background-color: white;
+    color: rgb(6, 117, 145)
+}
+
+.weather button#get-location:hover {
+    background-color: rgb(6, 117, 145);
+    color: white;
+    transition: all 0.2s;
+}
