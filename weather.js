@@ -20,3 +20,10 @@ btnSearch.addEventListener("click", () => {
                alert(error.message);
           });
 });
+
+cityNameInput.addEventListener("keypress", (e) => {
+     if (e.key === "Enter") {
+          e.preventDefault();
+          btnSearch.click();
+     }
+});
