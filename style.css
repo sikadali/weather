@@ -46,14 +46,14 @@
     font-size: medium;
 }
 
-.weather .enter_city {
+.weather .enter-city {
     display: flex;
     align-items: stretch;
     width: 100%;
     gap: 5px;
 }
 
-.weather .enter_city input {
+.weather .enter-city input {
     border: 2px solid var(--white);
     outline: none;
     border-radius: 5px;
@@ -63,11 +63,11 @@
     flex-grow: 5;
 }
 
-.weather .enter_city input::placeholder {
+.weather .enter-city input::placeholder {
     color: var(--white)
 }
 
-.weather .enter_city button {
+.weather .enter-city button {
     flex-grow: 1;
     background-color: transparent;
     font-weight:600;
@@ -79,7 +79,7 @@
     transition: all 0.2s;
 }
 
-.weather .enter_city button:hover {
+.weather .enter-city button:hover {
     color: white
 }
 
@@ -92,10 +92,11 @@
     width: 100%;
 }
 
-.weather hr.or::after {
+.weather hr::after {
     background-color: var(--main-color);
     content: 'OR';
     padding: 0 4px;
+    position: relative;
     top: -13px;
 }
 
