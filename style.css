@@ -96,7 +96,6 @@
     background-color: var(--main-color);
     content: 'OR';
     padding: 0 4px;
-    position: relative;
     top: -13px;
 }
 
@@ -117,14 +116,25 @@
     transition: all 0.2s;
 }
 
+.weather .main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px
+}
+
 .weather .temp {
     text-align: center;
 }
 
 .weather .feels-like {
-    position: absolute;
-    right: 20px;
-    transform: translateY(65%);
+    padding: 30px;
+    background-color: aliceblue;
+    border-radius: 50%;
+}
+
+.weather .feels-like * {
+    color: var(--main-color);
 }
 
 .weather .display-city {
@@ -140,7 +150,7 @@
 
 .weather .details h5 {
     font-weight: 300;
-    font-style: oblique;
+    font-size: x-small;
 }
 
 :root {
