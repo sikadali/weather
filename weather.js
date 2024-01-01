@@ -1,5 +1,7 @@
 import { weatherApiKey } from "./config.js"; // i have my API keys there
 
+const regionNames = new Intl.DisplayNames(["en"], { type: "region" });
+
 let weatherBodyElement = document.querySelector(".weather .weather-body");
 
 document.getElementById("back").style.display = "none";
@@ -18,46 +20,74 @@ function getAPIResults() {
           .then((response) => response.json())
           .then((data) => {
                console.log(data);
-               displayResults();
+               displayResults(
+                    parseInt(data.main.temp),
+                    parseInt(data.main.feels_like),
+                    data.weather[0].description,
+                    data.name,
+                    regionNames.of(data.sys.country),
+                    getTodayDate(),
+                    parseInt(data.main.temp_max),
+                    parseInt(data.main.temp_min),
+                    parseInt(data.main.humidity),
+                    parseInt(convertToMph(parseInt(data.wind.speed))),
+                    convertTimestamptoTime(parseInt(data.sys.sunrise)),
+                    convertTimestamptoTime(parseInt(data.sys.sunset)),
+                    data.weather[0].icon
+               );
           })
           .catch((error) => {
                alert(error.message);
           });
 }
 
-function displayResults() {
+function displayResults(
+     temp,
+     feelsLike,
+     description,
+     city,
+     country,
+     date,
+     tempMax,
+     tempMin,
+     humidity,
+     windSpeed,
+     sunrise,
+     sunset,
+     icon
+) {
      weatherBodyElement.innerHTML = `
-        <div class="date">Monday, 29th August 2023</div>
+        <div class="date">${date}</div>
         <div class="main">
             <div class="basic-data">
-                <img src="images/clear.png" alt="weather-icon" height="100px">
+                <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="weather-icon" height="100px">
                 <div class="temp">
-                    <h1>13°C</h1>
-                    <h5>Broken Clouds</h5>
+                    <h1>${temp}°C</h1>
+                    <h5>${description}</h5>
                 </div> 
             </div>
             <div class="feels-like">
-                <h2>12°C</h2>
+                <h2>${feelsLike}°C</h2>
                 <h6>Feels like</h6>
             </div>
         </div>
         <div class="display-city">
             <span class="material-symbols-outlined">pin_drop</span>
-            <h5>Kathmandu, Nepal</h5>
+            <h5>${city}, ${country}</h5>
         </div>
         <hr />
         <div class="details">
             <div class="high-low">
-                <h3>15°C</h3><h5>High</h5>
-                <h3>10°C</h3><h5>Low</h5>
+                <h3>${tempMax}°C</h3><h5>High</h5>
+                <h3>${tempMin}°C</h3><h5>Low</h5>
             </div>
             <div class="wind-humidity">
-                <h3>7mph</h3><h5>Wind</h5>
-                <h3>84%</h3><h5>Humidity</h5>
+                <h3>${windSpeed}mph</h3><h5>Wind</h5>
+                <h3>${humidity}%</h3><h5>Humidity</h5>
             </div>
             <div class="sunrise-sunset">
-                <h3>05:27</h3><h5>Sunrise</h5>
-                <h3>20:57</h3><h5>Sunset</h5>
+                <h3>${sunrise}</h3><h5>Sunrise</h5>
+                <h3>${sunset}</h3><h5>Sunset</h5>
             </div>
         </div>
     `;
@@ -74,6 +104,7 @@ function backToSearch() {
       <button id="get-location">Get Device Location</button>
   `;
      document.querySelector(".weather .enter-city button").addEventListener("click", getAPIResults);
+     document.getElementById("city").addEventListener("keypress", pressEnter);
      document.getElementById("back").style.display = "none";
 }
 
@@ -82,4 +113,33 @@ function pressEnter(e) {
           e.preventDefault();
           document.querySelector(".weather .enter-city button").click();
      }
+}
+
+function getTodayDate() {
+     const currentDate = new Date();
+     const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+     return currentDate.toLocaleDateString("en-us", options);
+}
+
+function convertToMph(meterPerSec) {
+     return meterPerSec / 0.44704;
+}
+
+function convertTimestamptoTime(unixTimestamp) {
+     // Convert to milliseconds and
+     // then create a new Date object
+     let dateObj = new Date(unixTimestamp * 1000);
+
+     // Get hours from the timestamp
+     let hours = dateObj.getUTCHours();
+
+     // Get minutes part from the timestamp
+     let minutes = dateObj.getUTCMinutes();
+
+     // Get seconds part from the timestamp
+     let seconds = dateObj.getUTCSeconds();
+
+     let formattedTime = hours.toString().padStart(2, "0") + ":" + minutes.toString().padStart(2, "0");
+
+     return formattedTime;
 }
