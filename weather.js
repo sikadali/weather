@@ -6,7 +6,7 @@ let weatherBodyElement = document.querySelector(".weather .weather-body");
 
 document.getElementById("back").style.display = "none";
 
-document.querySelector(".weather .enter-city button").addEventListener("click", getAPIResults);
+document.querySelector(".weather .enter-city button").addEventListener("click", () => getAPIResults());
 document.getElementById("get-location").addEventListener("click", getDeviceLocation);
 document.getElementById("back").addEventListener("click", backToSearch);
 document.getElementById("city").addEventListener("keypress", pressEnter);
@@ -106,7 +106,7 @@ function backToSearch() {
       <hr class="or"/>
       <button id="get-location">Get Device Location</button>
   `;
-     document.querySelector(".weather .enter-city button").addEventListener("click", getAPIResults);
+     document.querySelector(".weather .enter-city button").addEventListener("click", () => getAPIResults());
      document.getElementById("get-location").addEventListener("click", getDeviceLocation);
      document.getElementById("city").addEventListener("keypress", pressEnter);
      document.getElementById("back").style.display = "none";
@@ -150,10 +150,7 @@ function convertTimestamptoTime(unixTimestamp) {
 
 function getDeviceLocation() {
      if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition((position) => {
-               console.log(position.coords.latitude, position.coords.longitude);
-               getAPIResults(position);
-          });
+          navigator.geolocation.getCurrentPosition(getAPIResults);
      } else {
           alert("Geolocation is not supported by this browser.");
      }
