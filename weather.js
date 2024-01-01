@@ -7,12 +7,15 @@ let weatherBodyElement = document.querySelector(".weather .weather-body");
 document.getElementById("back").style.display = "none";
 
 document.querySelector(".weather .enter-city button").addEventListener("click", getAPIResults);
+document.getElementById("get-location").addEventListener("click", getDeviceLocation);
 document.getElementById("back").addEventListener("click", backToSearch);
 document.getElementById("city").addEventListener("keypress", pressEnter);
 
-function getAPIResults() {
+function getAPIResults(position) {
      let inputWord = document.getElementById("city").value;
-     let url = `https://api.openweathermap.org/data/2.5/weather?q=${inputWord}&appid=${weatherApiKey}&units=metric`;
+     let url = position
+          ? `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${weatherApiKey}&units=metric`
+          : `https://api.openweathermap.org/data/2.5/weather?q=${inputWord}&appid=${weatherApiKey}&units=metric`;
 
      console.log(url);
 
@@ -104,6 +107,7 @@ function backToSearch() {
       <button id="get-location">Get Device Location</button>
   `;
      document.querySelector(".weather .enter-city button").addEventListener("click", getAPIResults);
+     document.getElementById("get-location").addEventListener("click", getDeviceLocation);
      document.getElementById("city").addEventListener("keypress", pressEnter);
      document.getElementById("back").style.display = "none";
 }
@@ -142,4 +146,15 @@ function convertTimestamptoTime(unixTimestamp) {
      let formattedTime = hours.toString().padStart(2, "0") + ":" + minutes.toString().padStart(2, "0");
 
      return formattedTime;
+}
+
+function getDeviceLocation() {
+     if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition((position) => {
+               console.log(position.coords.latitude, position.coords.longitude);
+               getAPIResults(position);
+          });
+     } else {
+          alert("Geolocation is not supported by this browser.");
+     }
 }
