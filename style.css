@@ -145,8 +145,12 @@
 
 .weather .feels-like {
     padding: 30px;
+    width: 50px;
     background-color: aliceblue;
     border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .weather .feels-like * {

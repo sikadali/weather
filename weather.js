@@ -17,30 +17,43 @@ function getAPIResults(position) {
           ? `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${weatherApiKey}&units=metric`
           : `https://api.openweathermap.org/data/2.5/weather?q=${inputWord}&appid=${weatherApiKey}&units=metric`;
 
-     console.log(url);
-
      fetch(url)
-          .then((response) => response.json())
-          .then((data) => {
-               console.log(data);
-               displayResults(
-                    parseInt(data.main.temp),
-                    parseInt(data.main.feels_like),
-                    data.weather[0].description,
-                    data.name,
-                    regionNames.of(data.sys.country),
-                    getTodayDate(),
-                    parseInt(data.main.temp_max),
-                    parseInt(data.main.temp_min),
-                    parseInt(data.main.humidity),
-                    parseInt(convertToMph(parseInt(data.wind.speed))),
-                    convertTimestamptoTime(parseInt(data.sys.sunrise)),
-                    convertTimestamptoTime(parseInt(data.sys.sunset)),
-                    data.weather[0].icon
+          .then((response) => {
+               return new Promise((resolve) =>
+                    response.json().then((json) =>
+                         resolve({
+                              status: response.status,
+                              ok: response.ok,
+                              json,
+                         })
+                    )
                );
           })
-          .catch((error) => {
-               alert(error.message);
+          .then(({ status, json, ok }) => {
+               switch (status) {
+                    case 404:
+                         alert("CITY NOT FOUND, TRY AGAIN");
+                         break;
+                    case 200:
+                         displayResults(
+                              parseInt(json.main.temp),
+                              parseInt(json.main.feels_like),
+                              json.weather[0].description,
+                              json.name,
+                              regionNames.of(json.sys.country),
+                              getTodayDate(),
+                              parseInt(json.main.temp_max),
+                              parseInt(json.main.temp_min),
+                              parseInt(json.main.humidity),
+                              parseInt(convertToMph(parseInt(json.wind.speed))),
+                              convertTimestamptoTime(parseInt(json.sys.sunrise)),
+                              convertTimestamptoTime(parseInt(json.sys.sunset)),
+                              json.weather[0].icon
+                         );
+                         break;
+                    default:
+                         handleUnexpected(status, json);
+               }
           });
 }
 
@@ -154,4 +167,8 @@ function getDeviceLocation() {
      } else {
           alert("Geolocation is not supported by this browser.");
      }
+}
+
+function handleUnexpected(status, json) {
+     alert(status + ": " + json.message);
 }
