@@ -1,20 +1,20 @@
-import { weatherApiKey } from "./config.js";
+import { weatherApiKey } from "./config.js"; // i have my API keys there
 
-let cityNameInput = document.getElementById("city");
-let backButton = document.getElementById("back");
-let btnSearch = document.querySelector(".weather .enter-city button");
-let weatherElement = document.querySelector(".weather");
+let weatherBodyElement = document.querySelector(".weather .weather-body");
 
-backButton.style.display = "none";
+document.getElementById("back").style.display = "none";
 
-btnSearch.addEventListener("click", () => {
-     let inputWord = cityNameInput.value;
-     let url = `https://api.openweathermap.org/data/2.5/weather?q={${inputWord}}&appid={${weatherApiKey}}`;
+document.querySelector(".weather .enter-city button").addEventListener("click", getAPIResults);
+document.getElementById("back").addEventListener("click", backToSearch);
+document.getElementById("city").addEventListener("keypress", pressEnter);
+
+function getAPIResults() {
+     let inputWord = document.getElementById("city").value;
+     let url = `https://api.openweathermap.org/data/2.5/weather?q=${inputWord}&appid=${weatherApiKey}&units=metric`;
 
      console.log(url);
-     displayResults();
-     backButton = document.getElementById("back");
-     /*fetch(url)
+
+     fetch(url)
           .then((response) => response.json())
           .then((data) => {
                console.log(data);
@@ -22,37 +22,11 @@ btnSearch.addEventListener("click", () => {
           })
           .catch((error) => {
                alert(error.message);
-          });*/
-});
-
-cityNameInput.addEventListener("keypress", (e) => {
-     if (e.key === "Enter") {
-          e.preventDefault();
-          btnSearch.click();
-     }
-});
-
-backButton.addEventListener("click", () => {
-     weatherElement.innerHTML = `
-        <div class="navbar">
-            <button id="back"><span class="material-symbols-outlined">arrow_back</span></button>
-            <h3>Weather App</h3>
-        </div>
-        <div class="enter-city">
-            <input type="text" name="city-name" id="city" placeholder="Enter city name">
-            <button><span class="material-symbols-outlined">search</span></button>
-        </div>
-        <hr class="or"/>
-        <button id="get-location">Get Device Location</button>
-    `;
-});
+          });
+}
 
 function displayResults() {
-     weatherElement.innerHTML = `
-        <div class="navbar">
-            <button id="back"><span class="material-symbols-outlined">arrow_back</span></button>
-            <h3>Weather App</h3>
-        </div>
+     weatherBodyElement.innerHTML = `
         <div class="date">Monday, 29th August 2023</div>
         <div class="main">
             <div class="basic-data">
@@ -87,5 +61,25 @@ function displayResults() {
             </div>
         </div>
     `;
-     backButton.style.display = "block";
+     document.getElementById("back").style.display = "block";
+}
+
+function backToSearch() {
+     weatherBodyElement.innerHTML = `
+      <div class="enter-city">
+          <input type="text" name="city-name" id="city" placeholder="Enter city name">
+          <button><span class="material-symbols-outlined">search</span></button>
+      </div>
+      <hr class="or"/>
+      <button id="get-location">Get Device Location</button>
+  `;
+     document.querySelector(".weather .enter-city button").addEventListener("click", getAPIResults);
+     document.getElementById("back").style.display = "none";
+}
+
+function pressEnter(e) {
+     if (e.key === "Enter") {
+          e.preventDefault();
+          document.querySelector(".weather .enter-city button").click();
+     }
 }

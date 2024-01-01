@@ -16,13 +16,21 @@
 .weather {
     background-color: var(--main-color);
     padding: 20px;
+    
+    width : 300px;
+    gap: 15px;
+    position: relative;
+    animation: fade-in;
+}
+
+.weather .weather-body {
+    margin-top: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    width : 300px;
+    width : 100%;
     gap: 15px;
-    position: relative;
 }
 
 .weather .navbar {
@@ -40,6 +48,11 @@
     border: none;
     font-weight:600;
     cursor: pointer;
+}
+
+.weather .navbar button span:hover {
+    font-weight: 900;
+    transition: var(--basic-transition);
 }
 
 .weather .navbar h3 {
@@ -76,12 +89,14 @@
     align-items: center;
     justify-content: center;
     border: none;
-    transition: all 0.2s;
+    transition: var(--basic-transition);
 }
 
-.weather .enter-city button:hover {
-    color: white
+.weather .enter-city button span:hover {
+    font-weight: 900;
+    transition: var(--basic-transition);
 }
+
 
 .weather hr {
     border: none;
@@ -157,4 +172,10 @@
 :root {
     --main-color: rgb(14, 123, 187);
     --white: rgb(241, 241, 241);
+    --basic-transition: all 0.2s;
 }
+
+@keyframes fade-in { 
+    from { opacity: 0; } 
+    to { opacity: 1; } 
+} 
